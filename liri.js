@@ -40,7 +40,7 @@ function liri() {
                 movieInfo(searchPhrase);
                 break;
             case 'do-what-it-says':
-                if(process.argv.length < 4) throw 'You must enter a file path such as "this-file/random.tx" for LIRI to "do-what-it-says."'
+                if(process.argv.length < 4) throw 'You must enter a file path such as "this-file/random.txt" for LIRI to "do-what-it-says."'
                 fs.readFile(searchPhrase, 'utf8', (error, data) => {
                     if(error) throw error;
                     let liriCommand = data.split(',');
@@ -117,7 +117,7 @@ function songInfo(song){
                 console.log(`Artist(s): ${artistText}`);
                 console.log(`Song Preview: ${songData[key].external_urls.spotify}`);
                 console.log('');
-                fs.appendFile('log.txt' `#/#/#/#/#/#/#/#/#/#/#/#/SPOTIFY-THIS-SONG/#/#/#/#/#/#/#/#/#/#/#/#/\nSong: ${songData[key].name}\nAlbum: ${songData[key].album.name}\nArtist(s): ${artistText}\nSong Preview: ${songData[key].external_urls.spotify}\n\n`, (error) => {if(error) throw error;});
+                fs.appendFile('log.txt', `#/#/#/#/#/#/#/#/#/#/#/#/SPOTIFY-THIS-SONG/#/#/#/#/#/#/#/#/#/#/#/#/\nSong: ${songData[key].name}\nAlbum: ${songData[key].album.name}\nArtist(s): ${artistText}\nSong Preview: ${songData[key].external_urls.spotify}\n\n`, (error) => {if(error) throw error;});
             };
         }
     });
