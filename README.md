@@ -17,7 +17,7 @@ Download the source code or make a copy of this repo on your local computer. The
 * movie-this
 * do-what-it-says
 
-Note: LIRI's commands are case sensitive.
+**Note:** LIRI's commands are case sensitive.
 
 ### Giving LIRI A Command
 Every command, except for do-what-it-says, requires additional information such as an artist name, a song name, or a movie title for LIRI to give you the information you requested.
