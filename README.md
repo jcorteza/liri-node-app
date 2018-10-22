@@ -25,9 +25,11 @@ Every command, except for do-what-it-says, requires additional information such 
 Syntax: [`node liri.js <command> <additional-information>`]
 
 Sample Commands:  
-`node liri.js movie-this la la land` . 
-`node liri.js do-what-it-says` . 
-`node liri.js concert-this adele` . 
+`node liri.js movie-this la la land`  
+`node liri.js do-what-it-says`  
+`node liri.js concert-this adele`  
 
-Note: without additional information, spotify-this-song defaults to The Sign by Ace of Base and movie-this defaults to Mr. Nobody.
+**Note:** without additional information, spotify-this-song defaults to The Sign by Ace of Base and movie-this defaults to Mr. Nobody.
+
+#### [Video Example](https://drive.google.com/file/d/1U4FA2gJQbqb1hvzCZNioyhuzdfrX0J14/view)
 
