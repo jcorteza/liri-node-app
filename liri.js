@@ -3,10 +3,9 @@ const keys = require('./keys.js');
 const request = require('request');
 const S = require('string');
 const moment = require('moment');
-const task = process.argv[2];
 
 // if a 3rd process argument has been entered liri() will run otherwise an error is thrown
-if (task) {
+if (process.argv[2]) {
     liri();
 }
 else {
@@ -14,6 +13,7 @@ else {
 }
 // switch case of tasks for liri to complete based on user input
 function liri() {
+    const task = process.argv[2];
     if(task === 'concert-this' || task === 'spotify-this-song' || task === 'movie-this' || task === 'do-what-it-says') {
         let searchPhrase = "";
         for(i = 3; i < process.argv.length; i++){
@@ -22,7 +22,7 @@ function liri() {
         searchPhrase = S(searchPhrase).collapseWhitespace().s;
         switch(task){
             case 'concert-this':
-                if(process.argv.length < 4) throw 'You must enter an artist for LIRI to "concert-this.'
+                if(process.argv.length < 4) throw 'You must enter an artist for LIRI to "concert-this."'
                 eventInfo(searchPhrase);
                 break;
             case 'spotify-this-song':
@@ -40,8 +40,21 @@ function liri() {
                 break;
             case 'do-what-it-says':
                 const fs = require('fs');
-                if(process.argv.length < 4) throw 'You must enter BLANK for LIRI to "do-what-it-says.'
-                console.log('do-what-it-says requested');
+                if(process.argv.length < 4) throw 'You must enter a file path such as "this-file/random.tx" for LIRI to "do-what-it-says."'
+                fs.readFile(searchPhrase, 'utf8', (error, data) => {
+                    if(error) throw error;
+                    let liriCommand = data.split(',');
+                    for(const i in liriCommand){
+                        liriCommand[i] = liriCommand[i].trim();   
+                        liriCommand[i] = liriCommand[i].replace(/"/g, '');   
+                    }
+                    liriCommand[1] = liriCommand[1].split(' ');
+                    for(i = 0; i < liriCommand[1].length; i++) {
+                        process.argv[3 + i] = liriCommand[1][i];
+                    }
+                    process.argv[2] = liriCommand[0];
+                    liri();                   
+                });
                 break;
         }
     }
@@ -52,6 +65,7 @@ function liri() {
 function DisplayEventInfo(event){
     const date = moment(event.datetime, moment.ISO_8601).format('MM/DD/YYYY');
     console.log('=======================/CONCERT-THIS/==========================');
+    console.log(`Lineup: ${(event.lineup).toString().replace(/,/g, ', ')}`);
     console.log(`Venue: ${event.venue.name}`);
     (event.venue.region !== "") ? console.log(`Location: ${event.venue.city}, ${event.venue.region}`) : console.log(`Location: ${event.venue.city}, ${event.venue.country}`);
     console.log(`Date: ${date}`);
@@ -59,6 +73,7 @@ function DisplayEventInfo(event){
 }
 function eventInfo(artistname) {
     const Url = `https://rest.bandsintown.com/artists/${artistname}/events?app_id=${keys.bandsKey}&date=upcoming`;
+    console.log(Url);
     request(Url, (error, response, body) => {
         const data = JSON.parse(body);
         if(error) throw 'Whoops! Something went wrong...';
