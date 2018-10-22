@@ -1,5 +1,6 @@
 require('dotenv').config();
 const keys = require('./keys.js');
+const fs = require('fs');
 const request = require('request');
 const S = require('string');
 const moment = require('moment');
@@ -39,7 +40,6 @@ function liri() {
                 movieInfo(searchPhrase);
                 break;
             case 'do-what-it-says':
-                const fs = require('fs');
                 if(process.argv.length < 4) throw 'You must enter a file path such as "this-file/random.tx" for LIRI to "do-what-it-says."'
                 fs.readFile(searchPhrase, 'utf8', (error, data) => {
                     if(error) throw error;
@@ -70,6 +70,7 @@ function DisplayEventInfo(event){
     (event.venue.region !== "") ? console.log(`Location: ${event.venue.city}, ${event.venue.region}`) : console.log(`Location: ${event.venue.city}, ${event.venue.country}`);
     console.log(`Date: ${date}`);
     console.log('');
+    fs.appendFile('log.txt', `=======================/CONCERT-THIS/==========================\nLineup: ${(event.lineup).toString().replace(/,/g, ', ')}\nVenue: ${event.venue.name}\nLocation: ${event.venue.city}, ${event.venue.region} ${event.venue.country}\nDate: ${date}\n\n`, (error) => {if(error) throw error;});
 }
 function eventInfo(artistname) {
     const Url = `https://rest.bandsintown.com/artists/${artistname}/events?app_id=${keys.bandsKey}&date=upcoming`;
@@ -116,6 +117,7 @@ function songInfo(song){
                 console.log(`Artist(s): ${artistText}`);
                 console.log(`Song Preview: ${songData[key].external_urls.spotify}`);
                 console.log('');
+                fs.appendFile('log.txt' `#/#/#/#/#/#/#/#/#/#/#/#/SPOTIFY-THIS-SONG/#/#/#/#/#/#/#/#/#/#/#/#/\nSong: ${songData[key].name}\nAlbum: ${songData[key].album.name}\nArtist(s): ${artistText}\nSong Preview: ${songData[key].external_urls.spotify}\n\n`, (error) => {if(error) throw error;});
             };
         }
     });
@@ -145,6 +147,7 @@ function movieInfo(movie) {
             console.log(`Country: ${data.Country}`);
             console.log(`***PLOT***\n${data.Plot}`);
             console.log('');
+            fs.appendFile('log.txt', `^_^_^_^_^_^_^_^_^_^_^_^_^_^/MOVIE-THIS/^_^_^_^_^_^_^_^_^_^_^_^_^_^_^\n${data.Title}, ${data.Year}\n${movieRatings}\nActors: ${data.Actors}\nLanguage: ${data.Language}\nCountry: ${data.Country}\n***PLOT***\n${data.Plot}\n\n`, (error) => {if(error) throw error;});
         }
     });
 }
